@@ -7,7 +7,7 @@ fs.readFile("./routes.json", (err, data) => {
   routes = JSON.parse(data.toString("utf8"));
 });
 
-function serve(fileObj, res){
+function sendFile(fileObj, res){
   res.setHeader("Content-Type", fileObj.type);
   res.writeHead(200);
 
@@ -20,7 +20,7 @@ function serve(fileObj, res){
 
 function requestHandler(req, res) {
   if(Object.hasOwn(routes, req.url)) {
-    serve(routes[req.url], res);
+    sendFile(routes[req.url], res);
   } else {
     res.writeHead(404);
     res.end();
