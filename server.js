@@ -18,7 +18,7 @@ function serve(fileObj, res){
   });
 }
 
-function serveStatic(req, res) {
+function requestHandler(req, res) {
   if(Object.hasOwn(routes, req.url)) {
     serve(routes[req.url], res);
   } else {
@@ -28,5 +28,5 @@ function serveStatic(req, res) {
 }
 
 var server = new http.Server();
-server.on("request", serveStatic);
+server.on("request", requestHandler);
 server.listen(8080);
