@@ -1,1 +1,1 @@
-var $id = x => document.getElementById(x);
+const $id = x => document.getElementById(x);

@@ -23,8 +23,8 @@ async function getPostData(req) {
   return postbuf;
 }
 
-var routes = await getRoutes();
-var server = new http.Server();
+const routes = await getRoutes();
+const server = new http.Server();
 
 server.on("request", (req, res) => {
   if(Object.hasOwn(routes, req.url)) {
