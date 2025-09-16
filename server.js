@@ -1,32 +1,38 @@
-import fs from "node:fs";
+import fs from "node:fs/promises";
 import http from "node:http";
 
-var routes;
-fs.readFile("./routes.json", (err, data) => {
-  if(err) throw err;
-  routes = JSON.parse(data.toString("utf8"));
-});
+async function getRoutes(){
+  const routesFile = await fs.readFile("./routes.json");
+  return JSON.parse(routesFile.toString())
+}
 
-function sendFile(fileObj, res){
+async function sendFile(fileObj, res){
   res.setHeader("Content-Type", fileObj.type);
   res.writeHead(200);
 
-  fs.readFile(fileObj.path, (err, data) => {
-    if(err) throw err;
-    res.write(data);
-    res.end();
-  });
+  const resFile = await fs.readFile(fileObj.path);
+  res.write(resFile);
+  res.end();
 }
 
-function requestHandler(req, res) {
+async function getPostData(req) {
+  const postbuf = [];
+  for await(const chunk of req) {
+    postbuf.push(chunk);
+  }
+  return postbuf;
+}
+
+var routes = await getRoutes();
+var server = new http.Server();
+
+server.on("request", (req, res) => {
   if(Object.hasOwn(routes, req.url)) {
     sendFile(routes[req.url], res);
   } else {
     res.writeHead(404);
     res.end();
   }
-}
+});
 
-var server = new http.Server();
-server.on("request", requestHandler);
 server.listen(8080);
