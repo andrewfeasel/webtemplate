@@ -1,8 +1,11 @@
 body {
   font-family: sans-serif;
 }
-.centered {
+
+.flex {
   display: flex;
+}
+.centered {
   align-items: center;
   justify-content: center;
 }
