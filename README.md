@@ -13,19 +13,18 @@ You can decide which functions to include, which to use, etc. You can also add n
 and if you don't like mine, feel free to delete them, or tell me about it so I can make better functions.
 
 I have decided to create an array of "middlewares" that have the call signature of
-  (req: any, res: any): void
+  ```(req: any, res: any): void```
 These functions are called before the main server logic, promoting modularity.
 
 ### How do I add a new path so the server knows to send my file?
 If you do not add a new request/response pair to the "routes" property of config.json,
 your file will not be sent by the server. You can "fix" this problem by opening your favorite text editor,
 and adding a new property to the "routes" object.
-An example would be this:
+An example would be this:```
   "/": {
     "path": "./app/index.html",
     "type": "text/html"
-  }
-The above object translates to "When the client requests '/', send the file './app/index.html' with type 'text/html'".
+  }```
 That's pretty much how it works.
 
 ### How to change the server's settings?
