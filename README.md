@@ -31,5 +31,3 @@ That's pretty much how it works.
 ### How to change the server's settings?
 Other than changing the server's code, you can edit the settings in config.json,
 by changing the properties of "settings" to different values.
-
-### How do I change the settings of the server?
