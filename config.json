@@ -1,0 +1,19 @@
+{
+  "settings": {
+    "cors": false
+  }
+  "routes": {
+  	"/": {
+      "path": "./app/index.html",
+      "type": "text/html"
+    },
+    "/css/style.css": {
+      "path": "./app/css/style.css",
+      "type": "text/css"
+    },
+    "/js/script.js": {
+      "path": "./app/js/script.js",
+      "type": "text/javascript"
+    }
+  }
+}

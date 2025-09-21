@@ -1,46 +1,23 @@
 import fs from "node:fs";
 import http from "node:http";
+import { sendFile, ignoreCORS } from "./serverModule.js";
 
-function getRoutes(){
-  const routesFile = fs.readFileSync("./routes.json");
-  return JSON.parse(routesFile.toString())
-}
+const configFile = fs.readFileSync("./config.json");
+const config = JSON.parse(configFile.toString());
 
-async function sendFile(fileObj, res){
-  res.setHeader("Content-Type", fileObj.type);
-  res.writeHead(200);
+const middleware = [
+  config.settings.cors ? (req, res) => undefined : ignoreCORS 
+];
 
-  const fileStream = fs.createReadStream(fileObj.path);
-  fileStream.pipe(res);
-}
 
-function ignoreCORS(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204);
-    res.end();
-    return;
-  }
-}
-
-async function getPostData(req) {
-  const postbuf = [];
-  for await(const chunk of req) {
-    postbuf.push(chunk);
-  }
-  return postbuf;
-}
-
-const routes = getRoutes();
-const server = new http.Server();
-
+const server = http.createServer();
 server.on("request", (req, res) => {
-  ignoreCORS(req, res);
-  if(Object.hasOwn(routes, req.url)) {
-    sendFile(routes[req.url], res);
+  for(const module of middleware) {
+    module(req, res);
+    if(res.writableEnded) {return}
+  }
+  if(Object.hasOwn(config.routes, req.url)) {
+    sendFile(config.routes[req.url], res);
   } else {
     res.writeHead(404);
     res.end();
