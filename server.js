@@ -1,8 +1,8 @@
-import fs from "node:fs/promises";
+import fs from "node:fs";
 import http from "node:http";
 
-async function getRoutes(){
-  const routesFile = await fs.readFile("./routes.json");
+function getRoutes(){
+  const routesFile = fs.readFileSync("./routes.json");
   return JSON.parse(routesFile.toString())
 }
 
@@ -10,9 +10,20 @@ async function sendFile(fileObj, res){
   res.setHeader("Content-Type", fileObj.type);
   res.writeHead(200);
 
-  const resFile = await fs.readFile(fileObj.path);
-  res.write(resFile);
-  res.end();
+  const fileStream = fs.createReadStream(fileObj.path);
+  fileStream.pipe(res);
+}
+
+function ignoreCORS(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
 }
 
 async function getPostData(req) {
@@ -23,10 +34,11 @@ async function getPostData(req) {
   return postbuf;
 }
 
-const routes = await getRoutes();
+const routes = getRoutes();
 const server = new http.Server();
 
 server.on("request", (req, res) => {
+  ignoreCORS(req, res);
   if(Object.hasOwn(routes, req.url)) {
     sendFile(routes[req.url], res);
   } else {
