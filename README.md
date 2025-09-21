@@ -1,5 +1,8 @@
-## WebTemplate:
-When you want to make a website, but you don't like boilerplate, WebTemplate is a pretty good idea.
+## What this is
+WebTemplate is a repository that has the files necessary to start developing a website.
+You can make use of this repo by cloning it, and then you can instantly begin creating your website.
+There is a builtin HTTP server with easily modifiable request/response mappings in the config.
+WebTemplate is meant to be built upon and modified, so your website can be built faster.
 
 ## FAQ
 
