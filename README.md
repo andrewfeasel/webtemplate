@@ -119,7 +119,7 @@ Edit the `"settings"` object in `config.json` (e.g., to enable CORS).
 
 ## License
 
-MIT (or specify your license here)
+MIT
 
 ---
 
