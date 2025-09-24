@@ -1,7 +1,8 @@
 {
   "settings": {
+    "port": 8080,
     "cors": false
-  }
+  },
   "routes": {
   	"/": {
       "path": "./app/index.html",

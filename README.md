@@ -39,8 +39,8 @@ WebTemplate is a minimal starter template for rapidly building static websites w
 
 ## Project Structure
 
-- `server.js` — Main HTTP server; loads config, runs middleware, and handles routing.
-- `serverModule.js` — Contains helper functions for sending files and managing CORS.
+- `server.js` — HTTP server entry point; spawns multiple instances of the server for scalability.
+- `server-modules/` -- Contains the code for server instances, and module/utility code.
 - `config.json` — Main configuration: set routes and server settings here.
 - `package.json` — Declares the project as an ES module and sets the entry point.
 - `app/` — Place your HTML, CSS, and JS files here (see route examples in `config.json`).
@@ -53,7 +53,8 @@ All server behavior is controlled in `config.json`. Example:
 ```json
 {
   "settings": {
-    "cors": false
+    "cors": false,
+    "port": 8080
   },
   "routes": {
     "/": {
@@ -80,18 +81,18 @@ All server behavior is controlled in `config.json`. Example:
 ### Settings
 
 - `"cors": true` enables CORS headers for all responses.
-
+- `"port": 8080` sets the TCP port to 8080
 ---
 
 ## Middleware
 
 Middleware functions run before route matching and response.  
-You can add your own to the `middleware` array in `server.js`.  
+You can add your own to the `middleware` array in `server-modules/instance.js`.  
 Signature:
 ```js
 (req, res) => { /* ... */ }
 ```
-Example: Built-in `ignoreCORS` middleware from `serverModule.js`.
+Example: Built-in `ignoreCORS` middleware from `server-modules/instance.js`.
 
 ---
 

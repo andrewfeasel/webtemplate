@@ -1,27 +1,13 @@
-import fs from "node:fs";
-import http from "node:http";
-import { sendFile, ignoreCORS } from "./serverModule.js";
+import os from "node:os";
+import cluster from "node:cluster";
 
-const configFile = fs.readFileSync("./config.json");
-const config = JSON.parse(configFile.toString());
-
-const middleware = [
-  config.settings.cors ? (req, res) => undefined : ignoreCORS 
-];
-
-
-const server = http.createServer();
-server.on("request", (req, res) => {
-  for(const module of middleware) {
-    module(req, res);
-    if(res.writableEnded) {return}
-  }
-  if(Object.hasOwn(config.routes, req.url)) {
-    sendFile(config.routes[req.url], res);
-  } else {
-    res.writeHead(404);
-    res.end();
-  }
-});
-
-server.listen(8080);
+if(cluster.isPrimary) {
+  os.cpus().forEach(() => cluster.fork());
+  process.on("SIGINT", () => {
+    for(const instance of Object.values(cluster.workers)) { instance.kill(); }
+    process.exit();
+  })
+} else {
+  const instance = await import("./server-modules/instance.js");
+  await instance.default();
+}
