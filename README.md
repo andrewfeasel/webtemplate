@@ -7,12 +7,12 @@ WebTemplate is a minimal starter template for rapidly building static websites w
 ## Features
 
 - **Quick Start:** Begin development instantly after cloning.
-- **Built-in HTTP Server:** No external dependencies—runs on Node.js.
+- **Built-in HTTP Server:** No external dependencies, runs on Node.js, multi-threaded and powerful.
 - **Easy Configuration:** Route URLs to files through `config.json`.
 - **Custom Middleware:** Add your own logic to the request/response cycle.
 - **Optional CORS:** Toggle CORS support using the configuration file.
 - **Modern JavaScript:** Uses ECMAScript modules (`type: "module"` in `package.json`).
-
+- **Server Debugging** View V8 TurboFan optimizations / GC for the backend
 ---
 
 ## Getting Started
@@ -23,16 +23,16 @@ WebTemplate is a minimal starter template for rapidly building static websites w
    cd webtemplate
    ```
 
-2. **Install Node.js**  
+2. **Install Node.js**
    Ensure you have Node.js installed (https://nodejs.org/).
 
 3. **Run the server:**
    ```sh
-   node server.js
+   npm start
    ```
    The server listens on port **8080** by default.
 
-4. **Open your site:**  
+4. **Open your site:**
    Go to [http://localhost:8080](http://localhost:8080) in your browser.
 
 ---
@@ -92,7 +92,7 @@ Signature:
 ```js
 (req, res) => { /* ... */ }
 ```
-Example: Built-in `ignoreCORS` middleware from `server-modules/instance.js`.
+Example: Built-in `ignoreCORS` middleware from `server.js`.
 
 ---
 

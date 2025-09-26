@@ -1,4 +1,7 @@
 {
   "type": "module",
-  "main": "./server.js"
+  "main": "./server.js",
+  "scripts": {
+    "debug": "node --trace-opt --trace-deopt --trace-gc ./server.js"
+  }
 }
