@@ -7,18 +7,21 @@ import http from "node:http";
 import { sendFile } from "./server-modules/module-utils.js";
 
 if(cluster.isPrimary) {
+  const configFile = await fs.readFile("./config.json");
+  const instanceEnv = {
+    CONFIG: configFile.toString()
+  }
   const cpuCount = os.cpus().length;
   for(let i = 0; i < cpuCount; i++) {
-    cluster.fork();
+    cluster.fork(instanceEnv);
   }
   process.on("SIGINT", () => {
     for(const instance of Object.values(cluster.workers)) { instance.kill(); }
     process.exit();
   });
 } else {
-  const configFile = await fs.readFile("./config.json");
-  const config = Object.freeze(JSON.parse(configFile.toString()));
-
+  const config = Object.freeze(JSON.parse(process.env.CONFIG));
+  
   function staticResponse(req, res) {
     if(Object.hasOwn(config.routes, req.url)) {
       sendFile(config.routes[req.url], res);
