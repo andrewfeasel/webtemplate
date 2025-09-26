@@ -39,10 +39,10 @@ WebTemplate is a minimal starter template for rapidly building static websites w
 
 ## Project Structure
 
-- `server.js` — HTTP server entry point; spawns multiple instances of the server for scalability.
-- `server-modules/` -- Contains the code for server instances, and module/utility code.
+- `server.js` — The server, multithreaded and powerful: edit whenever you want.
+- `server-modules/` -- Contains some modular code for the server instances to use.
 - `config.json` — Main configuration: set routes and server settings here.
-- `package.json` — Declares the project as an ES module and sets the entry point.
+- `package.json` — Declares the entry point and a fancy debug command.
 - `app/` — Place your HTML, CSS, and JS files here (see route examples in `config.json`).
 
 ---
@@ -86,8 +86,8 @@ All server behavior is controlled in `config.json`. Example:
 
 ## Middleware
 
-Middleware functions run before route matching and response.  
-You can add your own to the `middleware` array in `server-modules/instance.js`.  
+Middleware functions run before route matching and response.
+You can add your own to the `middleware` array in `server.js`.
 Signature:
 ```js
 (req, res) => { /* ... */ }
@@ -99,6 +99,7 @@ Example: Built-in `ignoreCORS` middleware from `server.js`.
 ## FAQ
 
 ### How does the server work?
+- Spawns parallel instances that scale.
 - Loads configuration from `config.json`.
 - Applies middleware functions to each request.
 - If a request URL matches a configured route, serves the mapped file.
