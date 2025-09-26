@@ -1,10 +1,8 @@
-import os from "node:os";
-import cluster from "node:cluster";
-
 import fs from "node:fs/promises";
 import http from "node:http";
-
 import { sendFile } from "./server-modules/module-utils.js";
+import os from "node:os";
+import cluster from "node:cluster";
 
 if(cluster.isPrimary) {
   const configFile = await fs.readFile("./config.json");
