@@ -51,6 +51,6 @@ if(cluster.isPrimary) {
       if(res.writableEnded) break;
       await Promise.resolve(middleware[i](req, res));
     }
-    });
+  });
   server.listen(config.settings.port);
 }
